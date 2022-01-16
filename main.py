@@ -9,7 +9,7 @@ from multiprocessing import Process
 screenWidth = 1920
 screenHeight = 1080
 heroCount = 10
-waitBomb = 1800
+waitBomb = 300
 
 
 def MoveMouseTo(valuePosition):
@@ -31,12 +31,10 @@ def Click():
 
 def CheckSignInPage():
     try:
-        logoBombCrypto = pyautogui.locateOnScreen(
-            "./assets/logoBombCrypto.png")
-        connectWalletButton = pyautogui.locateOnScreen(
+        connectWalletButton = CheckPositionTagetFromScreen(
             "./assets/connectWalletButton.png")
         try:
-            if (connectWalletButton[0] & logoBombCrypto[0]):
+            if (connectWalletButton[1] >= 0.8):
                 return True
             else:
                 return False
@@ -48,19 +46,10 @@ def CheckSignInPage():
 
 def CheckHomePage():
     try:
-        logoGameTreasureHunt = pyautogui.locateOnScreen(
-            "./assets/logoGameTreasureHunt.png")
-        logoGameBattle = pyautogui.locateOnScreen(
-            "./assets/logoGameBattle.png")
-        logoGameAdventure = pyautogui.locateOnScreen(
-            "./assets/logoGameAdventure.png")
-        iconChest = pyautogui.locateOnScreen("./assets/iconChest.png")
-        iconHeroes = pyautogui.locateOnScreen("./assets/iconHeroes.png")
-        iconHome = pyautogui.locateOnScreen("./assets/iconHome.png")
-        iconStore = pyautogui.locateOnScreen("./assets/iconStore.png")
+        homePageScreen = CheckPositionTagetFromScreen(
+            "./assets/homePageScreen.png")
         try:
-            if (logoGameTreasureHunt[0] | logoGameBattle[0] | logoGameAdventure[0] | iconChest[0]
-                    | iconHeroes[0] | iconHome[0] | iconStore[0]):
+            if (homePageScreen[1] >= 0.8):
                 return True
             else:
                 return False
@@ -86,10 +75,10 @@ def CheckGameBoardTreasureHunt():
 
 def CheckMetamaskMenu():
     try:
-        iconMenuMetamask = pyautogui.locateOnScreen(
+        iconMenuMetamask = CheckPositionTagetFromScreen(
             "./assets/iconMenuMetamask.png")
         try:
-            if (iconMenuMetamask[0]):
+            if (iconMenuMetamask[1] >= 0.8):
                 return True
             else:
                 return False
@@ -461,19 +450,6 @@ def StepSkipError():
         CheckoutToMain()
 
 
-def ClickActiveGameBomb():
-    try:
-        while (True):
-            path = "./assets/logoBombCoin.png"
-            _BCOIN = CheckPositionTagetFromScreen(path)
-            if (_BCOIN[1] >= 0.9):
-                pyautogui.click(_BCOIN[3][0] + (_BCOIN[4] / 2),
-                                _BCOIN[3][1] + (_BCOIN[5] / 2), 1)
-            sleep(300)
-    except:
-        print("> FAIL PASS :: AUTO ACTIVE")
-
-
 def Main():
     _error = CheckMessageError()
     if (_error):
@@ -481,6 +457,7 @@ def Main():
         StepSkipError()
     else:
         _signInPage = CheckSignInPage()
+        print(_signInPage)
         if (_signInPage):
             print("> START STEP SIGNIN")
             StepSignIn()
@@ -510,9 +487,4 @@ def CheckoutToMain():
 
 if __name__ == '__main__':
     print("[ START AUTO BOMB CRYPTO ]")
-    p1 = Process(target=Main)
-    p1.start()
-    p2 = Process(target=ClickActiveGameBomb)
-    p2.start()
-    p1.join()
-    p2.join()
+    Main()
