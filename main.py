@@ -314,9 +314,10 @@ def StepHeroesControl():
                 while (True):
                     if (j == 21):
                         break
-                    StepScrollMouseDown(1000*1000)
+                    StepScrollMouseDown(100000000)
                     j += 1
             heroPage += 1
+            sleep(0.5)
         StepCloseHeroesControl()
     except:
         CheckoutToMain()
